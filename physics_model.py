@@ -4,8 +4,6 @@
 physics_model.py — Thermal Physics & Coolant Fluid Equations Core
 ================================================================
 Helix Alpha Strand: Pure Science, Fluid Thermodynamics, and Analytical Physics.
-
-INCLUDES: Transient thermal inertia models for dielectric coolants (Novec 7100 / Fluorinert).
 """
 import math
 from dataclasses import dataclass
@@ -13,8 +11,8 @@ from dataclasses import dataclass
 @dataclass
 class Coolant:
     name: str
-    specific_heat_j_kg_k: float  # Specific heat capacity in J/(kg·K)
-    density_kg_l: float          # Density in kg/L at reference temp
+    specific_heat_j_kg_k: float
+    density_kg_l: float
     dielectric: bool = False
 
 COOLANTS = {
@@ -43,22 +41,23 @@ def calculate_required_flow_rate(wattage_w: float, delta_t_k: float, coolant_nam
     return required_volume_flow_l_s * 60.0
 
 def calculate_transient_thermal_inertia(coolant_name: str, delta_temp_dt: float, flow_rate_lpm: float) -> float:
-    """
-    PREVENTS BOILING INCIPIENCE OVERSHOOT (Clever Physics Model):
-    Dielectric coolants slip out of microchannel cavities. During high-speed VFD transitions,
-    we compute the thermal lag to predict boiling delays and adjust pump speed ahead of heat spikes.
-    """
     fluid = COOLANTS.get(coolant_name, COOLANTS["novec"])
     viscosity_factor = 0.58 if fluid.dielectric else 1.0
-    lag_seconds = (fluid.density_kg_l * 0.15) / (flow_rate_lpm * viscosity_factor)
+    # Guard against division by zero in case of sensor dropout
+    clamped_flow = max(0.1, flow_rate_lpm)
+    lag_seconds = (fluid.density_kg_l * 0.15) / (clamped_flow * viscosity_factor)
     return lag_seconds * delta_temp_dt
 
 def estimate_gpu_junction_temp(coolant_inlet_c: float, thermal_resistance_k_w: float, wattage_w: float) -> float:
     return coolant_inlet_c + (wattage_w * thermal_resistance_k_w)
 
-# 3. EMERGENCY REACTION LEVEL
+# 3. EMERGENCY REACTION LEVEL (RED MITIGATION)
 def calculate_critical_thermal_runaway_boundary(current_temp_c: float, target_temp_c: float) -> float:
+    """
+    RED TEAM MITIGATION: Guard against cavitation boundaries.
+    Clamps throttle to safe ranges even under total sensor dropouts.
+    """
     thermal_margin = target_temp_c - current_temp_c
-    if thermal_margin < 2.0:
-        return 0.5
+    if thermal_margin < 2.0 or current_temp_c > 95.0:
+        return 0.2  # Forced 80% thermal down-clock to prevent chip destruction
     return 1.0
