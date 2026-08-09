@@ -1,55 +1,76 @@
-# xai-colossus-cooling-alpha
+# Cooling Alpha — Thermal Envelope Evaluator
 
-<!-- README-MESH:BEGIN -->
-## Three-audience project map
+A small, independently testable thermal-envelope component for compute-infrastructure scenario modeling.
 
-### For recruiters and non-specialists
+> **Independent portfolio project.** This repository is not affiliated with, endorsed by, employed by, or deployed at xAI. It does not claim proprietary Colossus data, facility access, live telemetry, or hardware control.
 
-**What it does.** Calculates the cooling requirement and thermal margin for a compute-infrastructure scenario without mixing the calculation with controller behavior.
+## Recruiter view
 
-- Explains what cooling capacity is needed before deciding how pumps or flow should respond.
-- Makes assumptions and calculated requirements independently reviewable.
-- Pairs with the Omega controller to form a complete compute-to-control loop.
+The canonical public implementation is [`src/thermal_spec.py`](src/thermal_spec.py). Given a modeled inlet temperature, allowed temperature rise, and measured outlet temperature, it evaluates whether the outlet remains inside a bounded thermal envelope and reports remaining margin.
 
-**Evidence:** [`src/thermal_spec.py`](src/thermal_spec.py) and [`tests/test_thermal_spec.py`](tests/test_thermal_spec.py).
+Current verified behavior:
 
-### For senior engineers and domain experts
+- computes a design outlet from `inlet_c + max_delta_t`;
+- caps the accepted outlet against the local throttle constant;
+- reports pass/fail and thermal margin;
+- carries `design_mw` as scenario context but does **not** currently derive flow or cooling capacity from it;
+- performs no network queries, telemetry reads, or external actions.
 
-**Innovation and evolution.** Alpha owns the stateless thermal specification: demand, margins, and constraint evidence. It does not mutate controller state. This clean responsibility boundary allows requirements to be tested independently and consumed by different control strategies. It evolved into the analytical half of the Colossus cooling helix, with server placement supplying heat-load distribution and Omega closing the feedback loop.
+This is an envelope evaluator, not a datacenter cooling controller or CFD/digital-twin proof.
 
-### For AI systems and toolchains
+## Engineering boundary
 
-- Repository ID: `GlacierEQ/xai-colossus-cooling-alpha`
-- Default branch: `master`
-- Protobuf package: `glaciereq.readme.v1`
-- Typed role: consumes rack heat-load context and provides thermal requirements to Cooling Omega.
-- Canonical graph: [`manifests/readme_mesh.json`](https://github.com/GlacierEQ/job-app-helix/blob/main/manifests/readme_mesh.json)
-
-```protobuf
-repository: "GlacierEQ/xai-colossus-cooling-alpha"
-display_name: "Colossus Cooling Alpha"
-one_line_purpose: "Compute thermal requirements and margins as an independently testable specification."
+```text
+modeled inlet + allowed delta + observed/scenario outlet
+                    │
+                    ▼
+          src/thermal_spec.py
+                    │
+                    ▼
+      pass/fail + margin + design outlet
 ```
 
-### Repository mesh
+Canonical proof paths:
 
-| Connected repository | Relationship | Combined value |
-|---|---|---|
-| [Cooling Omega](https://github.com/GlacierEQ/xai-colossus-cooling-omega) | consumed by | Requirements become stateful flow-control decisions. |
-| [Colossus Servers](https://github.com/GlacierEQ/xai-colossus-servers) | receives capability | Rack placement supplies physical heat-load distribution. |
-| [AKOS](https://github.com/GlacierEQ/AKOS) | governed by | Evidence and responsibility boundaries remain explicit. |
+| Path | Role |
+|---|---|
+| `src/thermal_spec.py` | bounded thermal-envelope evaluator |
+| `tests/test_thermal_spec.py` | deterministic nominal/hot-path checks |
+| `scripts/verify_public_core.py` | receipt-producing public verifier |
+| `.github/workflows/ci.yml` | exact-branch Python truth gate |
 
-Real schema: [`proto/readme_mesh.proto`](https://github.com/GlacierEQ/job-app-helix/blob/main/proto/readme_mesh.proto).
-<!-- README-MESH:END -->
+The repository also contains older root-level physics, PINN, telemetry-named, integrity, and experimental surfaces. They are preserved as historical/experimental material and are **not** promoted by this public contract unless separately verified.
 
-**Alpha — what is required.** A stateless thermal-envelope specification for a Colossus-class compute portfolio demonstration.
+## Alpha / Omega relationship
 
-This is an independent xAI/Colossus problem-space project, not a claim of xAI employment, endorsement, proprietary data, or operational deployment.
+Cooling Alpha and [`xai-colossus-cooling-omega`](https://github.com/GlacierEQ/xai-colossus-cooling-omega) are an architectural pair: Alpha evaluates the thermal requirement/envelope; Omega models a stateful flow response. The repositories do not currently establish a live cross-repository runtime integration or physical actuator connection.
 
-## Fleet ops (transparent)
+## Verify
 
-Integrity baselines and health sidecars, when present, are documented multi-repository operations. See [SECURITY_AND_FLEET_OPS.md](SECURITY_AND_FLEET_OPS.md).
+```bash
+python tests/test_thermal_spec.py
+python scripts/verify_public_core.py
+```
 
-## Helix strand
+Successful verification establishes only the local deterministic model/test contract on the checked source revision.
 
-See [HELIX_STRAND.md](HELIX_STRAND.md) for the Alpha/Omega role.
+## Machine contract
+
+```yaml
+schema: glaciereq.component-surface.v1
+repository: GlacierEQ/xai-colossus-cooling-alpha
+canonical_branch: master
+role: SPECIALIST_COMPONENT
+capability: thermal_envelope_evaluator
+evidence_level: TEST
+external_queries: 0
+external_actions: 0
+live_telemetry: false
+hardware_actuation: false
+runtime_pairing_with_omega: false
+company_affiliation_claim: false
+```
+
+## Nonclaims
+
+This repository does not establish xAI affiliation, proprietary access, production deployment, live Colossus telemetry, pump/valve/chiller actuation, measured PUE or efficiency, validation at a specific GPU/MW/rack scale, or physical-system safety certification.
