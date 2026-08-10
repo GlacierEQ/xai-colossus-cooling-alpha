@@ -1,0 +1,24 @@
+{
+  "schema": "glaciereq.operability-receipt.v1",
+  "repository": "GlacierEQ/xai-colossus-cooling-alpha",
+  "at": "2026-08-10T04:12Z",
+  "source_sha": "72f0aa51fbadf1e6159956faccf1dfa2fc4eb63bfcfaf0f849e1c0efbdb16f47",
+  "entry": "scripts/operate.py",
+  "primary_output": {
+    "module": "thermal_spec",
+    "ok": true,
+    "repository": "GlacierEQ/xai-colossus-cooling-alpha",
+    "smoke": {
+      "args": [
+        "Envelope(inlet_c=1.0, max_delta_t=1.0, d"
+      ],
+      "content_checked": true,
+      "invoked": true,
+      "kind": "fn",
+      "name": "outlet",
+      "result": 2.0
+    }
+  },
+  "dual_run_ok": true,
+  "result": "PASS"
+}

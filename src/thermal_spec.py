@@ -4,7 +4,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 import math
 
-ANSWER = 42
 STEFAN_BOLTZMANN = 5.670374419e-8
 THROTTLE_C = 83.0
 TARGET_C = 42.0
@@ -27,9 +26,8 @@ def within_spec(env: Envelope, measured_outlet_c: float) -> dict:
         "margin_c": round(margin, 2),
         "design_outlet_c": round(outlet(env), 2),
         "target_c": TARGET_C,
-        "answer": ANSWER,
         "strand": "alpha",
-        "sigma_sb": STEFAN_BOLTZMANN,
+        "sigma_sb": STEFAN_BOLTZMANN
     }
 
 if __name__ == "__main__":
