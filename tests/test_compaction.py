@@ -1,8 +1,9 @@
-# SPDX-License-Identifier: Proprietary
-# Copyright (c) 2026 Casey del Carpio Barton
-import os, sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from thermal_spec import Envelope, within_spec
 
-def test_compaction():
-    # Model range compliance check
-    print("  [PASS] Alpha strand: Nominal mathematical bounds check successful.")
+
+def test_receipt_is_deterministic_for_same_scenario() -> None:
+    env = Envelope(25.0, 15.0, 50.0)
+    first = within_spec(env, 38.0, 60_000.0)
+    second = within_spec(env, 38.0, 60_000.0)
+    assert first == second
+    assert first["digest"] == second["digest"]

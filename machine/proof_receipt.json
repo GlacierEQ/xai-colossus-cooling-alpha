@@ -1,31 +1,7 @@
 {
-  "schema": "glaciereq.proof-receipt.v1",
+  "schema": "glaciereq.proof-receipt.v2",
   "repository": "GlacierEQ/xai-colossus-cooling-alpha",
-  "source_sha": "72f0aa51fbadf1e6159956faccf1dfa2fc4eb63bfcfaf0f849e1c0efbdb16f47",
-  "proof_id": "elite-xai-colossus-cooling-alpha-1786335149",
-  "environment": {
-    "python": "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python",
-    "PYTHONPATH": "/Users/kcbflux/job-app/repos/xai-colossus-cooling-alpha:/Users/kcbflux/job-app/repos/xai-colossus-cooling-alpha/src",
-    "entry": "unittest"
-  },
-  "tests": [
-    "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python -m unittest discover -s tests -v (x2)"
-  ],
-  "adversarial_tests": [
-    "tests/test_adversarial.py"
-  ],
-  "runtime": {
-    "operate": "scripts/operate.py (x2)",
-    "dual_run_ok": true,
-    "proof_dual_run_ok": true
-  },
-  "result": "PASS",
-  "limitations": [
-    "not production deployed",
-    "reference implementation only"
-  ],
-  "timestamp": "2026-08-10T04:12Z",
-  "artifact_hashes": {
-    "operability_receipt": "01ac2f9e89456456747163ad5975748d3f89dbf16268e0a814dc31c6aef93064"
-  }
+  "status": "HISTORICAL_RECEIPT_SUPERSEDED",
+  "reason": "Prior proof was bound to the generic promotion/operate framework and predates the crystallized steady-state cooling-requirement product.",
+  "replacement": "machine/crystallization/completion-receipt.json after exact-head product proof"
 }
