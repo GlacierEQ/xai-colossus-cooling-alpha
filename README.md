@@ -47,7 +47,7 @@ Cooling Alpha owns the **requirement/envelope calculation**. `xai-colossus-cooli
 
 ## Historical material
 
-Older root-level `physics_model.py`, `pinn_digital_twin.py`, integrity/watchdog files, and prior promotion receipts are preserved for lineage. They are **not canonical runtime authority** and are not imported by the installed product. In particular, old PID, emergency-mitigation, APEX/MCP, 100,000+ GPU, PUE, flow-range, and neural-controller language is not evidence for this repository.
+Older root-level `physics_model.py`, `pinn_digital_twin.py`, integrity/watchdog files, and prior promotion receipts are preserved for lineage. They are **not canonical runtime authority** and are not imported by the installed product. Old PID, emergency-mitigation, fleet-scale, PUE, fixed flow-range, APEX/MCP, and neural-controller language is not evidence for this repository.
 
 The previous local HMAC `PROMOTED` mechanism used a repository-known reference secret and is retired. Cryptographic ceremony with a public secret is not independent promotion authority. Terminal status now comes only from exact-head repository behavior and a source-bound completion receipt.
 
@@ -65,7 +65,7 @@ CI additionally builds/installs the wheel, executes the installed CLI and direct
 This repository does **not** establish:
 
 - xAI affiliation, employment, endorsement, proprietary access, or facility data;
-- a 100,000+ GPU cooling controller or any particular rack/MW deployment scale;
+- a live datacenter cooling controller or any particular fleet, rack, or MW deployment scale;
 - measured PUE, production efficiency, or validated facility flow ranges;
 - live telemetry, sensor fusion, PID control, pump/valve/chiller control, emergency cooling, or hardware actuation;
 - CFD/digital-twin validation, calibrated transient behavior, or physical-system safety certification;
