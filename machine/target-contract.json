@@ -1,22 +1,24 @@
 {
-  "schema": "glaciereq.repo-target-contract.v1",
+  "schema": "glaciereq.repo-target-contract.v2",
   "identity": {
     "repository_id": "GlacierEQ/xai-colossus-cooling-alpha",
-    "family": "elite-estate"
+    "family": "local-cooling-requirement-model",
+    "purpose": "convert a local design heat load and thermal envelope into transparent steady-state coolant-flow requirements and bounded pass/refuse scenario receipts"
   },
   "current": {
-    "state": "PROMOTED",
+    "state": "FUNCTIONAL_CRYSTALLIZATION_CANDIDATE",
     "implemented": true,
-    "tested": true,
-    "deployed": false
+    "terminal_current_head_verified": false,
+    "deployed": false,
+    "naturally_deployable": false
   },
+  "evidence_state": "LOCAL_STEADY_STATE_COOLING_REQUIREMENT_MODEL_NOT_XAI_FACILITY_CONTROL",
+  "completion_rule": "CRYSTALLIZED only after exact-head tests prove the thermal requirement equations, adversarial refusal paths, installable CLI, direct operability, public truth surface, and zero material local-purpose gaps, followed by a source-bound completion receipt whose carrying head re-passes the same matrix.",
   "nonclaims": [
-    "no employer affiliation",
-    "no production deployment without receipt"
-  ],
-  "donor_plan": {
-    "mode": "none",
-    "donors": []
-  },
-  "frozen_at": "2026-08-10T04:12Z"
+    "no xAI affiliation, facility access, proprietary data, or deployment",
+    "no live telemetry, PID controller, pump/valve/chiller actuation, or emergency cooling authority",
+    "no measured PUE, production efficiency, or validated facility flow range",
+    "no CFD/digital-twin calibration or physical-system safety certification",
+    "no live Alpha/Omega runtime pairing or MCP/APEX/AKOS/Mastermind connectivity"
+  ]
 }

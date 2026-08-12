@@ -1,0 +1,52 @@
+{
+  "schema": "glaciereq.crystallization-completion-receipt.v1",
+  "repository": "GlacierEQ/xai-colossus-cooling-alpha",
+  "status": "CRYSTALLIZED",
+  "verified_source_head": "ee7767da595803822c47dda647c451a75ff76ce5",
+  "canonical_purpose": "Provide an installable deterministic local steady-state cooling-requirement evaluator that converts design heat load and temperature-rise constraints into transparent coolant-flow requirements and bounded scenario receipts.",
+  "evidence_state": "LOCAL_STEADY_STATE_COOLING_REQUIREMENT_MODEL_NOT_XAI_FACILITY_CONTROL",
+  "capabilities": {
+    "material_count": 9,
+    "implemented_count": 9,
+    "verified_count": 9,
+    "remaining_gap_count": 0
+  },
+  "proof": {
+    "workflow_run_id": 31645686872,
+    "conclusion": "success",
+    "python_3_11": {"job_id": 94278559100, "conclusion": "success"},
+    "python_3_13": {"job_id": 94278559160, "conclusion": "success"},
+    "proved": [
+      "18 behavioral and adversarial tests",
+      "steady-state heat-load to mass-flow calculation",
+      "volumetric-flow conversion",
+      "observed-flow modeled heat-removal and margin calculation",
+      "fail-closed malformed/non-finite/negative/unknown-coolant paths",
+      "installable wheel build",
+      "installed cooling-alpha-evaluate CLI execution",
+      "direct nominal and constrained operability",
+      "conflict-free README and strengthened public truth surface",
+      "legacy repository-known HMAC promotion authority retired",
+      "all crystallization capabilities WORKING",
+      "empty material gap matrix"
+    ]
+  },
+  "build": "PASS",
+  "tests": "PASS",
+  "runtime": "PASS",
+  "truth_verification": "PASS",
+  "legacy_promotion_authority": "RETIRED",
+  "deployment": {
+    "status": "NOT_APPLICABLE",
+    "reason": "The complete product is a local/reference thermal requirement evaluator. Facility telemetry, control-loop attachment, and hardware actuation require separate calibration, authority, and safety evidence."
+  },
+  "truth_boundary": [
+    "No xAI affiliation, employment, endorsement, proprietary access, or facility data is established.",
+    "No live telemetry, PID controller, pump/valve/chiller actuation, or emergency cooling authority is established.",
+    "No measured PUE, production efficiency, or validated facility flow range is established.",
+    "No CFD/digital-twin calibration or physical-system safety certification is established.",
+    "No live Alpha/Omega runtime pairing or MCP/APEX/AKOS/Mastermind connectivity is established.",
+    "No production deployment or production-scale reliability is established."
+  ],
+  "receipt_head_rule": "This receipt is terminal only if the commit carrying it re-passes the exact Python 3.11/3.13 product and truth matrix and remains fresh against canonical master immediately before merge."
+}

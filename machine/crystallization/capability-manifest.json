@@ -1,0 +1,14 @@
+{
+  "schema": "glaciereq.crystallization-capabilities.v1",
+  "capabilities": [
+    {"id":"validated_thermal_envelope","state":"WORKING","implementation_paths":["src/thermal_spec.py"],"verification":["tests/test_thermal_spec.py","tests/test_adversarial.py"]},
+    {"id":"design_heat_load_flow_requirement","state":"WORKING","implementation_paths":["src/thermal_spec.py"],"verification":["tests/test_thermal_spec.py","tests/test_nominal.py"]},
+    {"id":"volumetric_flow_conversion","state":"WORKING","implementation_paths":["src/thermal_spec.py"],"verification":["tests/test_thermal_spec.py"]},
+    {"id":"optional_observed_capacity_estimate","state":"WORKING","implementation_paths":["src/thermal_spec.py"],"verification":["tests/test_thermal_spec.py","tests/test_emergency.py"]},
+    {"id":"deterministic_receipt","state":"WORKING","implementation_paths":["src/thermal_spec.py"],"verification":["tests/test_compaction.py"]},
+    {"id":"installable_product","state":"WORKING","implementation_paths":["pyproject.toml","src/cooling_alpha_cli.py"],"verification":[".github/workflows/ci.yml"]},
+    {"id":"direct_operability","state":"WORKING","implementation_paths":["scripts/operate.py"],"verification":["tests/test_integration.py"]},
+    {"id":"public_truth_boundary","state":"WORKING","implementation_paths":["README.md","scripts/verify_public_core.py"],"verification":[".github/workflows/ci.yml"]},
+    {"id":"legacy_promotion_theater_retired","state":"WORKING","implementation_paths":["machine/promotion_authority.json","machine/excellence-state.json"],"verification":["tests/test_promotion_authority.py"]}
+  ]
+}

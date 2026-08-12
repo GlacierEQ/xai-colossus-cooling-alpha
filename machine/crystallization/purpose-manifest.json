@@ -1,0 +1,10 @@
+{
+  "schema": "glaciereq.crystallization-purpose.v1",
+  "repository": "GlacierEQ/xai-colossus-cooling-alpha",
+  "canonical_purpose": "Provide an installable deterministic local steady-state cooling-requirement evaluator that converts design heat load and temperature-rise constraints into transparent coolant-flow requirements and bounded scenario receipts.",
+  "consumers": ["developers", "reviewers", "local infrastructure simulations", "architectural Cooling Omega peer"],
+  "natural_runtime": "installable local Python library and CLI",
+  "naturally_deployable": false,
+  "deployment_reason": "The verified product is a local/reference requirement model. Facility telemetry or actuation would introduce external authority, calibration, and safety requirements outside this purpose.",
+  "evidence_state": "LOCAL_STEADY_STATE_COOLING_REQUIREMENT_MODEL_NOT_XAI_FACILITY_CONTROL"
+}

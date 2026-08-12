@@ -1,136 +1,75 @@
-<<<<<<< HEAD
-# Cooling Alpha — Thermal Envelope Evaluator
-=======
-# xAI Colossus Cooling Alpha — Primary Cooling Loop Controller 🧊
+# Cooling Alpha — Thermal Requirement Evaluator
 
-> **Primary liquid cooling loop management for 100,000+ GPU datacenter thermal regulation.**
+**Installable, deterministic steady-state cooling-requirement and thermal-envelope software for local compute-infrastructure scenarios.**
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue)]()
-[![Domain](https://img.shields.io/badge/Domain-Datacenter%20Cooling-cyan)]()
->>>>>>> 9a5b100 (docs(readme): upgrade to 3-section recruiter/engineer/mesh structure & update SHA-256 baseline)
+> **Independent portfolio project.** This repository is not affiliated with, endorsed by, employed by, or deployed at xAI. It does not establish proprietary Colossus data, facility access, live telemetry, pump/valve/chiller actuation, or physical-system safety authority.
 
-A small, independently testable thermal-envelope component for compute-infrastructure scenario modeling.
+Evidence state: `LOCAL_STEADY_STATE_COOLING_REQUIREMENT_MODEL_NOT_XAI_FACILITY_CONTROL`
 
-<<<<<<< HEAD
-> **Independent portfolio project.** This repository is not affiliated with, endorsed by, employed by, or deployed at xAI. It does not claim proprietary Colossus data, facility access, live telemetry, or hardware control.
+## What the product does
 
-## Recruiter view
+The canonical product is `src/thermal_spec.py`. It turns a modeled heat load and coolant temperature-rise envelope into a transparent steady-state requirement:
 
-The canonical public implementation is [`src/thermal_spec.py`](src/thermal_spec.py). Given a modeled inlet temperature, allowed temperature rise, and measured outlet temperature, it evaluates whether the outlet remains inside a bounded thermal envelope and reports remaining margin.
+- validates finite, positive design inputs and fails closed on malformed scenarios;
+- computes design outlet temperature from inlet plus allowed temperature rise;
+- uses the steady-state sensible-heat relation `Q = m_dot * cp * delta_T` to derive required coolant mass flow;
+- converts mass flow to volumetric flow using an explicit reference coolant density;
+- evaluates measured/scenario outlet temperature against the bounded envelope;
+- when an observed/scenario flow is supplied, estimates modeled heat removal and reports capacity margin/shortfall;
+- emits deterministic machine-readable receipts and performs zero external queries or actions.
 
-Current verified behavior:
+The default `water_reference` properties are **illustrative engineering reference constants**, not facility-fluid certification. A different coolant requires explicit properties rather than a silent fallback.
 
-- computes a design outlet from `inlet_c + max_delta_t`;
-- caps the accepted outlet against the local throttle constant;
-- reports pass/fail and thermal margin;
-- carries `design_mw` as scenario context but does **not** currently derive flow or cooling capacity from it;
-- performs no network queries, telemetry reads, or external actions.
+## Install and run
 
-This is an envelope evaluator, not a datacenter cooling controller or CFD/digital-twin proof.
-
-## Engineering boundary
-
-```text
-modeled inlet + allowed delta + observed/scenario outlet
-                    │
-                    ▼
-          src/thermal_spec.py
-                    │
-                    ▼
-      pass/fail + margin + design outlet
+```bash
+python -m pip install .
+cooling-alpha-evaluate
+cooling-alpha-evaluate --inlet-c 25 --max-delta-t 15 --design-mw 50 --measured-outlet-c 38 --observed-flow-lpm 60000
+python scripts/operate.py
 ```
 
-Canonical proof paths:
+## Core API
 
-| Path | Role |
-|---|---|
-| `src/thermal_spec.py` | bounded thermal-envelope evaluator |
-| `tests/test_thermal_spec.py` | deterministic nominal/hot-path checks |
-| `scripts/verify_public_core.py` | receipt-producing public verifier |
-| `.github/workflows/ci.yml` | exact-branch Python truth gate |
+```python
+from thermal_spec import Envelope, within_spec, required_volume_flow_lpm
 
-The repository also contains older root-level physics, PINN, telemetry-named, integrity, and experimental surfaces. They are preserved as historical/experimental material and are **not** promoted by this public contract unless separately verified.
+env = Envelope(inlet_c=25.0, max_delta_t=15.0, design_mw=50.0)
+print(required_volume_flow_lpm(env))
+print(within_spec(env, measured_outlet_c=38.0, observed_flow_lpm=60000.0))
+```
 
-## Alpha / Omega relationship
+The result separates thermal-envelope status from optional modeled flow/capacity status. It does not issue hardware commands.
 
-Cooling Alpha and [`xai-colossus-cooling-omega`](https://github.com/GlacierEQ/xai-colossus-cooling-omega) are an architectural pair: Alpha evaluates the thermal requirement/envelope; Omega models a stateful flow response. The repositories do not currently establish a live cross-repository runtime integration or physical actuator connection.
+## Alpha / Omega boundary
+
+Cooling Alpha owns the **requirement/envelope calculation**. `xai-colossus-cooling-omega` may consume such a requirement as an architectural peer, but this repository does not claim a live cross-repository runtime, actuator path, or shared production control loop.
+
+## Historical material
+
+Older root-level `physics_model.py`, `pinn_digital_twin.py`, integrity/watchdog files, and prior promotion receipts are preserved for lineage. They are **not canonical runtime authority** and are not imported by the installed product. Old PID, emergency-mitigation, fleet-scale, PUE, fixed flow-range, APEX/MCP, and neural-controller language is not evidence for this repository.
+
+The previous local HMAC `PROMOTED` mechanism used a repository-known reference secret and is retired. Cryptographic ceremony with a public secret is not independent promotion authority. Terminal status now comes only from exact-head repository behavior and a source-bound completion receipt.
 
 ## Verify
 
 ```bash
-python tests/test_thermal_spec.py
+python -m pytest -q
 python scripts/verify_public_core.py
 ```
 
-Successful verification establishes only the local deterministic model/test contract on the checked source revision.
+CI additionally builds/installs the wheel, executes the installed CLI and direct operator, rejects merge-conflict markers and legacy unsupported public claims, and requires every crystallization capability to be `WORKING` with an empty material gap matrix.
 
-## Machine contract
+## Evidence boundary
 
-```yaml
-schema: glaciereq.component-surface.v1
-repository: GlacierEQ/xai-colossus-cooling-alpha
-canonical_branch: master
-role: SPECIALIST_COMPONENT
-capability: thermal_envelope_evaluator
-evidence_level: TEST
-external_queries: 0
-external_actions: 0
-live_telemetry: false
-hardware_actuation: false
-runtime_pairing_with_omega: false
-company_affiliation_claim: false
-```
+This repository does **not** establish:
 
-## Nonclaims
+- xAI affiliation, employment, endorsement, proprietary access, or facility data;
+- a live datacenter cooling controller or any particular fleet, rack, or MW deployment scale;
+- measured PUE, production efficiency, or validated facility flow ranges;
+- live telemetry, sensor fusion, PID control, pump/valve/chiller control, emergency cooling, or hardware actuation;
+- CFD/digital-twin validation, calibrated transient behavior, or physical-system safety certification;
+- live MCP, APEX, AKOS, Mastermind, or agent-mesh connectivity;
+- production deployment or production-scale reliability.
 
-This repository does not establish xAI affiliation, proprietary access, production deployment, live Colossus telemetry, pump/valve/chiller actuation, measured PUE or efficiency, validation at a specific GPU/MW/rack scale, or physical-system safety certification.
-=======
-## 🎯 For Recruiters & Hiring Managers
-
-This repository implements a **primary cooling loop controller** for the xAI Colossus datacenter — managing chilled water distribution across GPU racks to maintain optimal operating temperatures. It demonstrates:
-
-- **PID control loops** for chilled water temperature and flow rate regulation
-- **Thermal zone management** with per-rack temperature monitoring and coolant distribution
-- **Predictive load modeling** anticipating thermal demand from training job schedules
-- **Failover logic** with redundant pump management and emergency cooling sequences
-
-**Why this matters**: Datacenter cooling at 100,000+ GPU scale is a **controls engineering challenge** requiring the same PID tuning, sensor fusion, and fault-tolerant design used in industrial process control, HVAC systems, and manufacturing automation.
-
----
-
-## 🔬 For Engineers & Technical Reviewers
-
-### Core Components
-
-| Component | Language | Purpose |
-|---|---|---|
-| `src/cooling_alpha.py` | Python | PID controller, thermal zone manager, pump orchestration |
-| `tests/` | Python | Thermal simulation with fault injection scenarios |
-
-### Key Metrics
-
-- **Target PUE**: 1.08 (Power Usage Effectiveness)
-- **Coolant Temp**: 18-24°C supply, 35-42°C return
-- **Flow Rate**: 2000-5000 L/min per zone
-
----
-
-## 🤖 ML/AI & Programmatic Mesh Integration
-
-- **MCP Tool**: `cooling_status(zone_id)` — thermal state queryable by energy optimization agents
-- **Mastermind Sidecar**: Publishes thermal alerts to APEX Highway mesh
-- **AI Extension**: Neural PID auto-tuning from historical thermal response data
-
-```python
-status = await mcp_client.call_tool("colossus-cooling-alpha", "zone_status", {"zone": "A1"})
-```
-
----
-
-## ⚡ Quick Start
-
-```bash
-python3 src/cooling_alpha.py
-python3 tests/test_cooling_alpha.py
-```
->>>>>>> 9a5b100 (docs(readme): upgrade to 3-section recruiter/engineer/mesh structure & update SHA-256 baseline)
+The target is a complete, inspectable local **thermal requirement evaluator**, not a fictional datacenter control system.

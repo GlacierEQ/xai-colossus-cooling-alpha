@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "glaciereq-cooling-alpha"
+version = "1.0.0"
+description = "Independent steady-state cooling-requirement and thermal-envelope evaluator"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+cooling-alpha-evaluate = "cooling_alpha_cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["thermal_spec", "cooling_alpha_cli"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]

@@ -1,1 +1,18 @@
-{"capabilities": ["hyper-scaling"]}
+{
+  "schema": "glaciereq.repository-capabilities.v2",
+  "repository": "GlacierEQ/xai-colossus-cooling-alpha",
+  "status": "FUNCTIONAL_CRYSTALLIZATION_CANDIDATE",
+  "evidence_state": "LOCAL_STEADY_STATE_COOLING_REQUIREMENT_MODEL_NOT_XAI_FACILITY_CONTROL",
+  "capabilities": [
+    "validated-steady-state-thermal-envelope",
+    "design-heat-load-to-mass-flow-requirement",
+    "mass-flow-to-volumetric-flow-requirement",
+    "optional-observed-flow-heat-removal-estimate",
+    "thermal-and-capacity-margin-receipt",
+    "deterministic-machine-receipt",
+    "installable-local-library-and-cli",
+    "direct-pass-and-refuse-operability",
+    "fail-closed-public-truth-verification"
+  ],
+  "terminal_status_requires": "exact-head Python 3.11/3.13 behavior, package, installed CLI, direct runtime, truth verification, empty gap matrix, and source-bound completion receipt"
+}

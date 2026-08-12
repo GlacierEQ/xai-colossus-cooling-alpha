@@ -1,0 +1,8 @@
+{
+  "naturally_deployable": false,
+  "test_commands": [["python", "-m", "pytest", "-q"]],
+  "build_commands": [["python", "-m", "pip", "wheel", ".", "--no-deps", "-w", "dist"]],
+  "runtime_commands": [["cooling-alpha-evaluate", "--compact"], ["python", "scripts/operate.py"]],
+  "truth_commands": [["python", "scripts/verify_public_core.py"]],
+  "deployment_reason": "Local/reference thermal requirement evaluator; facility attachment requires separate telemetry, calibration, hardware authority, and safety evidence."
+}
